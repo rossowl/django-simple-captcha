@@ -2,7 +2,14 @@ from cStringIO import StringIO
 from captcha.models import CaptchaStore
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
-import Image,ImageDraw,ImageFont,ImageFilter,random
+
+try:
+    import Image,ImageDraw,ImageFont,ImageFilter
+
+except ImportError:
+    from PIL import Image,ImageDraw,ImageFont,ImageFilter
+
+import random
 from captcha.conf import settings
 
 def captcha_image(request,key):
