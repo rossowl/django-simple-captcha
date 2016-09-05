@@ -10,7 +10,7 @@ def math_challenge():
         operands = (operands[1],operands[0])
     challenge = '%d%s%d' %(operands[0],operator,operands[1])
     return u'%s=' %(challenge), unicode(eval(challenge))
-    
+
 def random_char_challenge():
     chars,ret = u'abcdefghijklmnopqrstuvwxyz', u''
     for i in range(settings.CAPTCHA_LENGTH):
@@ -22,7 +22,7 @@ def unicode_challenge():
     for i in range(settings.CAPTCHA_LENGTH):
         ret += random.choice(chars)
     return ret.upper(), ret
-        
+
 def word_challenge():
     fd = file(settings.CAPTCHA_WORDS_DICTIONARY,'rb')
     l = fd.readlines()
@@ -32,7 +32,7 @@ def word_challenge():
         if len(word) >= settings.CAPTCHA_DICTIONARY_MIN_LENGTH and len(word) <= settings.CAPTCHA_DICTIONARY_MAX_LENGTH:
             break
     return word.upper(), word.lower()
-    
+
 def noise_arcs(draw,image):
     size = image.size
     draw.arc([-20,-20, size[0],20], 0, 295, fill=settings.CAPTCHA_FOREGROUND_COLOR)
@@ -47,5 +47,9 @@ def noise_dots(draw,image):
     return draw
 
 def post_smooth(image):
-    import ImageFilter
+    try:
+        import ImageFilter
+
+    except ImportError:
+        from PIL import ImageFilter
     return image.filter(ImageFilter.SMOOTH)
